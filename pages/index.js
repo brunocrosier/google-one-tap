@@ -1,204 +1,111 @@
-import Head from 'next/head'
+import Head from "next/head"
+import { fb, googleProvider } from "../firebase"
+import { useGoogleOneTap } from "../useGoogleOneTap.ts"
 
 export default function Home() {
+  const {
+    shouldShowFallbackButton,
+    setShouldShowFallbackButton,
+    loggedInUser,
+    authLoading,
+  } = useGoogleOneTap()
+
   return (
-    <div className="container">
+    <div
+      css={css`
+        background: #fff;
+        display: grid;
+        grid-auto-rows: min-content;
+        gap: 1rem;
+        width: 100vw;
+        @media all and (orientation: landscape) {
+          max-width: 1040px;
+        }
+        padding: 10vw;
+        * {
+          font-family: Google Sans;
+        }
+        button {
+          width: max-content;
+          background: #1a73e8;
+          border: none;
+          box-shadow: 2px 2px 4px #0000002e;
+          border-radius: 4px;
+          padding: 0.2rem 2rem;
+          color: white;
+          min-height: 40px;
+          font-size: 14px;
+        }
+      `}
+    >
       <Head>
-        <title>Create Next App</title>
+        <title>Google One-Tap Login Example</title>
         <link rel="icon" href="/favicon.ico" />
+        <script src="https://accounts.google.com/gsi/client" />
+        <script async defer src="https://buttons.github.io/buttons.js" />
       </Head>
 
-      <main>
-        <h1 className="title">
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+      <h1>Google One-Tap + Next.js + Firebase Auth</h1>
 
-        <p className="description">
-          Get started by editing <code>pages/index.js</code>
-        </p>
+      <p>
+        A demo for how to implement Google One-Tap on Next.js with Firebase
+        Auth, and a fallback for devices that don't support it.
+        <br />
+        <br />
+        Made by <a href="https://twitter.com/bruno_crosier">@bruno_crosier</a>
+      </p>
 
-        <div className="grid">
-          <a href="https://nextjs.org/docs" className="card">
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+      <a
+        className="github-button"
+        href="https://github.com/brunocrosier"
+        data-icon="octicon-star"
+        data-show-count="true"
+        aria-label="Star ntkme/github-buttons on GitHub"
+      >
+        Star
+      </a>
 
-          <a href="https://nextjs.org/learn" className="card">
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/zeit/next.js/tree/master/examples"
-            className="card"
+      {shouldShowFallbackButton && !loggedInUser && (
+        <>
+          <h3>one-tap is not displayed, here is a fallback button:</h3>
+          <button
+            onClick={() =>
+              fb
+                .auth()
+                .signInWithRedirect(googleProvider)
+                .catch(function (error) {
+                  console.error("bruno says", error)
+                })
+            }
           >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+            Continue with Google
+          </button>
+        </>
+      )}
 
-          <a
-            href="https://zeit.co/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="card"
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with ZEIT Now.
-            </p>
-          </a>
-        </div>
-      </main>
+      {loggedInUser && <h2>Wassup, {loggedInUser?.displayName} !</h2>}
 
-      <footer>
-        <a
-          href="https://zeit.co?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      {authLoading && <h5>loading..</h5>}
+
+      {loggedInUser && (
+        <button
+          disabled={authLoading}
+          onClick={() => {
+            fb.auth().signOut()
+            google.accounts.id.disableAutoSelect()
+            setShouldShowFallbackButton(false)
+          }}
         >
-          Powered by <img src="/zeit.svg" alt="ZEIT Logo" />
-        </a>
-      </footer>
+          Log out & disable auto-login
+        </button>
+      )}
 
-      <style jsx>{`
-        .container {
-          min-height: 100vh;
-          padding: 0 0.5rem;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-
-        main {
-          padding: 5rem 0;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-
-        footer {
-          width: 100%;
-          height: 100px;
-          border-top: 1px solid #eaeaea;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        footer img {
-          margin-left: 0.5rem;
-        }
-
-        footer a {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        a {
-          color: inherit;
-          text-decoration: none;
-        }
-
-        .title a {
-          color: #0070f3;
-          text-decoration: none;
-        }
-
-        .title a:hover,
-        .title a:focus,
-        .title a:active {
-          text-decoration: underline;
-        }
-
-        .title {
-          margin: 0;
-          line-height: 1.15;
-          font-size: 4rem;
-        }
-
-        .title,
-        .description {
-          text-align: center;
-        }
-
-        .description {
-          line-height: 1.5;
-          font-size: 1.5rem;
-        }
-
-        code {
-          background: #fafafa;
-          border-radius: 5px;
-          padding: 0.75rem;
-          font-size: 1.1rem;
-          font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-            DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-        }
-
-        .grid {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-wrap: wrap;
-
-          max-width: 800px;
-          margin-top: 3rem;
-        }
-
-        .card {
-          margin: 1rem;
-          flex-basis: 45%;
-          padding: 1.5rem;
-          text-align: left;
-          color: inherit;
-          text-decoration: none;
-          border: 1px solid #eaeaea;
-          border-radius: 10px;
-          transition: color 0.15s ease, border-color 0.15s ease;
-        }
-
-        .card:hover,
-        .card:focus,
-        .card:active {
-          color: #0070f3;
-          border-color: #0070f3;
-        }
-
-        .card h3 {
-          margin: 0 0 1rem 0;
-          font-size: 1.5rem;
-        }
-
-        .card p {
-          margin: 0;
-          font-size: 1.25rem;
-          line-height: 1.5;
-        }
-
-        @media (max-width: 600px) {
-          .grid {
-            width: 100%;
-            flex-direction: column;
-          }
-        }
-      `}</style>
-
-      <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
-        }
-
-        * {
-          box-sizing: border-box;
-        }
-      `}</style>
+      <div
+        id="put-google-one-tap-here-plz"
+        css={css`
+          justify-self: center;
+        `}
+      />
     </div>
   )
 }
