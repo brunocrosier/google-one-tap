@@ -33,7 +33,7 @@ export const useGoogleOneTap = () => {
         auto_select: true,
         context: "use",
         native_callback: nativeCallback,
-        prompt_parent_id: 'put-google-one-tap-here-plz'
+        prompt_parent_id: "put-google-one-tap-here-plz",
       })
       google.accounts.id.prompt((notification) => {
         console.log("notification is: ", notification.getMomentType())
@@ -60,7 +60,9 @@ export const useGoogleOneTap = () => {
             "one-tap dismissed because:",
             notification.getDismissedReason()
           )
-          setShouldShowFallbackButton(true)
+          if (notification.getDismissedReason() !== "credential_returned") {
+            setShouldShowFallbackButton(true)
+          }
         }
       })
     } else {
@@ -87,6 +89,6 @@ export const useGoogleOneTap = () => {
     shouldShowFallbackButton,
     setShouldShowFallbackButton,
     loggedInUser,
-    authLoading
+    authLoading,
   }
 }

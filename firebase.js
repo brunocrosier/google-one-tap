@@ -1,9 +1,7 @@
 import fb from "firebase/app"
-import "firebase/firestore"
 import "firebase/auth"
-import "firebase/storage"
-import "firebase/analytics"
 
+// put your firebase config here
 const firebaseConfig = {
   apiKey: "AIzaSyDmT-oN49541m8WeYffBohNte6zqAPZ5Qk",
   authDomain: "fluted-anthem-274223.firebaseapp.com",
@@ -16,34 +14,8 @@ const firebaseConfig = {
 
 const firebase = !fb.apps.length ? fb.initializeApp(firebaseConfig) : fb.app()
 
-const db = firebase?.firestore()
-
 const googleProvider = new fb.auth.GoogleAuthProvider()
-
-const facebookProvider = new fb.auth.FacebookAuthProvider()
-
-const timeStampFromDate = fb.firestore.Timestamp.fromDate
-
-const timestampNow = fb.firestore.Timestamp.now
-
-const storage = firebase.storage()
-
-const analytics = firebase.analytics
 
 const firebaseAuth = firebase?.auth()
 
-const fbDotAuth = fb.auth
-
-export {
-  firebase,
-  googleProvider,
-  facebookProvider,
-  fb,
-  timeStampFromDate,
-  storage,
-  analytics,
-  db,
-  firebaseAuth,
-  timestampNow,
-  fbDotAuth,
-}
+export { firebase, googleProvider, fb, firebaseAuth }

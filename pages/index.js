@@ -18,7 +18,7 @@ export default function Home() {
         grid-auto-rows: min-content;
         gap: 1rem;
         width: 100vw;
-        @media all and (orientation: landscape) {
+        @media all and (orientation: landscape), (min-width: 768px) {
           max-width: 1040px;
         }
         padding: 10vw;
@@ -39,33 +39,31 @@ export default function Home() {
       `}
     >
       <Head>
-        <title>Google One-Tap Login Example</title>
-        <link rel="icon" href="/favicon.ico" />
         <script src="https://accounts.google.com/gsi/client" />
-        <script async defer src="https://buttons.github.io/buttons.js" />
+        {/* <script async defer src="https://buttons.github.io/buttons.js" /> */}
       </Head>
 
       <h1>Google One-Tap + Next.js + Firebase Auth</h1>
 
       <p>
-        A demo for how to implement Google One-Tap on Next.js with Firebase
-        Auth, and a fallback for devices that don't support it.
+        A little demo of how to implement Google One-Tap with Next.js & Firebase
+        Auth - plus a fallback for devices that don't support it.
       </p>
       <p>
         Made by <a href="https://twitter.com/bruno_crosier">@bruno_crosier</a>
       </p>
 
-      <a
+      {/* <a
         className="github-button"
         href="https://github.com/brunocrosier"
         data-icon="octicon-star"
         data-show-count="true"
-        aria-label="Star ntkme/github-buttons on GitHub"
+        aria-label="Star brunocrosier on GitHub"
       >
         Star
-      </a>
+      </a> */}
 
-      {shouldShowFallbackButton && !loggedInUser && (
+      {shouldShowFallbackButton && !loggedInUser && !authLoading && (
         <>
           <h3>one-tap is not displayed, here is a fallback button:</h3>
           <button
@@ -100,6 +98,7 @@ export default function Home() {
         </button>
       )}
 
+      {/* we can make One-Tap attach to a custom element - see 'prompt_parent_id' in useGoogleOneTap.ts */}
       <div
         id="put-google-one-tap-here-plz"
         css={css`
