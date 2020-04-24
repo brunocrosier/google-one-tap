@@ -16,9 +16,7 @@ export default class MyDocument extends Document {
             name="apple-mobile-web-app-status-bar-style"
             content="#121212"
           />
-
-          <link rel="manifest" href="/manifest.webmanifest" />
-
+          
           <link
             href="https://fonts.googleapis.com/css2?family=Google+Sans&display=swap"
             rel="stylesheet"

@@ -50,8 +50,8 @@ export default function Home() {
       <p>
         A demo for how to implement Google One-Tap on Next.js with Firebase
         Auth, and a fallback for devices that don't support it.
-        <br />
-        <br />
+      </p>
+      <p>
         Made by <a href="https://twitter.com/bruno_crosier">@bruno_crosier</a>
       </p>
 
