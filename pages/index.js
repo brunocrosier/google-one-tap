@@ -40,7 +40,7 @@ export default function Home() {
     >
       <Head>
         <script src="https://accounts.google.com/gsi/client" />
-        {/* <script async defer src="https://buttons.github.io/buttons.js" /> */}
+        <script async defer src="https://buttons.github.io/buttons.js" />
       </Head>
 
       <h1>Google One-Tap + Next.js + Firebase Auth</h1>
@@ -53,15 +53,15 @@ export default function Home() {
         Made by <a href="https://twitter.com/bruno_crosier">@bruno_crosier</a>
       </p>
 
-      {/* <a
+      <a
         className="github-button"
-        href="https://github.com/brunocrosier"
+        href="https://github.com/brunocrosier/google-one-tap"
         data-icon="octicon-star"
         data-show-count="true"
         aria-label="Star brunocrosier on GitHub"
       >
         Star
-      </a> */}
+      </a>
 
       {shouldShowFallbackButton && !loggedInUser && !authLoading && (
         <>
